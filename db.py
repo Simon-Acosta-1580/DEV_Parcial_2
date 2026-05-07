@@ -4,8 +4,13 @@ from sqlmodel import Session, create_engine, SQLModel
 from fastapi import FastAPI, Depends
 from typing import Annotated
 
+load_dotenv()
+neon_db = os.getenv("DATABASE_URL")
 
-engine = create_engine()
+sqlite_name="base.sqlite3"
+sqlite_url=(f"sqlite:///{sqlite_name}")
+
+engine = create_engine(neon_db)
 
 def create_all_tables(app: FastAPI):
     if os.getenv("ENV") == "dev":
