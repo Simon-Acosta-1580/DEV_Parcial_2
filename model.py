@@ -3,13 +3,7 @@ from email.policy import default
 from datetime import datetime
 
 
-class Dog(SQLModel, table = True):
-    __tablename__ = "Dogs"
 
-    created: datetime = Field(
-        default_factory=datetime.utcnow(),
-        sa_column_kwargs={"server_default": "NOW()"}
-    )
 class DogBase(SQLModel):
     name: str = Field(default=None)
     size: str = Field(default=None)
@@ -35,19 +29,3 @@ class DogUpload(DogBase):
     created: datetime = Field(default=None, exclude=True)
     alive: bool = Field(default=True, exclude=True)
 
-class Sticker(SQLModel, table = True):
-    __tablename__ = "Stickers"
-
-    created: datetime = Field(
-        default_factory=datetime.utcnow(),
-        sa_column_kwargs={"server_default": "NOW()"}
-    )
-
-
-class Book(SQLModel, table = True):
-    __tablename__ = "Books"
-
-    created: datetime = Field(
-        default_factory=datetime.utcnow(),
-        sa_column_kwargs={"server_default": "NOW()"}
-    )

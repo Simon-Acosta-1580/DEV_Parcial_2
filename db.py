@@ -1,20 +1,15 @@
-import os
-from dotenv import load_dotenv
 from sqlmodel import Session, create_engine, SQLModel
 from fastapi import FastAPI, Depends
 from typing import Annotated
 
-load_dotenv()
-neon_db = os.getenv("DATABASE_URL")
 
-sqlite_name="base.sqlite3"
+sqlite_name="bienestar.sqlite3"
 sqlite_url=(f"sqlite:///{sqlite_name}")
 
-engine = create_engine(neon_db)
+engine = create_engine(sqlite_url)
 
 def create_all_tables(app: FastAPI):
-    if os.getenv("ENV") == "dev":
-        SQLModel.metadata.create_all(engine)
+    SQLModel.metadata.create_all(engine)
     yield
 
 
@@ -24,4 +19,3 @@ def get_session()->Session:
 
 
 SessionDep = Annotated[Session, Depends(get_session)]
-
