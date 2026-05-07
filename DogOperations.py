@@ -12,3 +12,15 @@ def createDog(dog: DogBase, session: Session):
 
     return new_dog
 
+def getAllDogs(session: Session):
+    return session.query(DogBase).all()
+
+def get_alive_dogs(session: Session):
+    statement = select(DogId).where(DogId.alive == True)
+    results = session.exec(statement).all()
+    return results
+
+def get_notAlive_dogs(session: Session):
+    statement = select(DogId).where(DogId.activo == False)
+    results = session.exec(statement).all()
+    return results
