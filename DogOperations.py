@@ -24,3 +24,42 @@ def get_notAlive_dogs(session: Session):
     statement = select(DogId).where(DogId.activo == False)
     results = session.exec(statement).all()
     return results
+
+def find_one_dogs(id: int, session: Session):
+    try:
+        return session.get_one(DogId, id)
+    except NoResultFound:
+        return None
+
+def update_one_dog(id: int, new_dog: DogUpload, session: Session):
+    dog = session.get(DogId, id)
+
+    if not dog:
+        return None
+
+    try:
+        update_data = new_dog.model_dump(exclude_unset=True)
+
+        dog.sqlmodel_update(update_data)
+
+        session.add(dog)
+        session.commit()
+        session.refresh(dog)
+        return dog
+
+    except Exception as e:
+        return None
+
+def delete_dog(id: int, session: Session):
+    dog = session.get(DogId, id)
+
+    if not dog:
+        return None
+
+    dog.alive = False
+
+    session.add(dog)
+    session.commit()
+    session.refresh(dog)
+
+    return dog
